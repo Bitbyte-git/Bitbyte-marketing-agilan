@@ -88,10 +88,11 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-# Local frontend + deployed frontend
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://bitbyte-marketing-agilan.vercel.app",
     # Vercel deploy aana apram inga add pannunga:
     # "https://your-frontend-name.vercel.app",
 ]
