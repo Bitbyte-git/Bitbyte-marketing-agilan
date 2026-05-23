@@ -108,7 +108,7 @@ const pingInterval = useRef(null)
 useEffect(() => {
   const wakeUp = async () => {
     try {
-      await fetch('https://bitbyte-backend-f66f.onrender.com/api/ping/')
+      await fetch('https://bitbyte-marketing-backend.onrender.com/api/ping/')
       setServerReady(true)          // ✅ mark server as ready
       clearInterval(pingInterval.current)
     } catch {
@@ -136,7 +136,7 @@ const handleLogin = async (e) => {
     })
   }
 
-  const attemptLogin = () => api.post('/login/', { email, password })
+  const attemptLogin = () => api.post('login/', { email, password })
 
     try {
       let res

@@ -237,7 +237,7 @@ draw() {
 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: '20px' }}>
   <img 
     src={logo} 
-    alt="BitByte Logo" 
+    alt="Meta Metails Logo" 
     style={{ width: 60, height: 50, borderRadius: '10px', objectFit: 'contain' }} 
   />
 </div>
@@ -259,7 +259,7 @@ draw() {
         </h1>
         
         <p style={{ color: subtext, maxWidth: '600px', margin: '0 auto 3rem', fontSize: '1.2rem', lineHeight: 1.6 }}>
-          The next evolution of BitByte Technology. We don't just build software; we craft digital atmospheres.
+          The next evolution of Meta Metals. We don't just build software; we craft digital atmospheres.
         </p>
 
         <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
@@ -294,7 +294,7 @@ draw() {
       </div>
 
       <footer style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '40px', color: subtext, fontSize: '0.9rem', opacity: 0.6 }}>
-        © 2026 BitByte Technologies. Bending the rules of the web.
+        © 2026 Meta Metails. Bending the rules of the web.
       </footer>
     </div>
   )
