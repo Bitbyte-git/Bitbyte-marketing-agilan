@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import logo from '../assets/logo.png'
+// import logo from '../assets/logo.png'
 
 // Even more organic particles
 const PARTICLES = Array.from({ length: 25 }, (_, i) => ({
@@ -236,7 +236,8 @@ draw() {
       }}>
 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: '20px' }}>
   <img 
-    src={logo} 
+    // src={logo} 
+    src="/team_369.png"
     alt="Meta Metails Logo" 
     style={{ width: 60, height: 50, borderRadius: '10px', objectFit: 'contain' }} 
   />

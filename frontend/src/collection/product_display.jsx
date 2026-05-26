@@ -268,7 +268,7 @@ const handleBuy = async () => {
     key: 'rzp_test_SqmXZHA3RWz5ua',
     amount: Math.round(displayPrice * qty * 100),
     currency: 'INR',
-    name: 'BitByte Jewellers',
+    name: 'Meta Metails Jewellers',
     description: productName,
     handler: function(response) {
       alert('✅ Payment Successful! ID: ' + response.razorpay_payment_id)
@@ -291,7 +291,7 @@ const basePrice = Number(product?.price) || 0
     product?.desc ||
     product?.description ||
     product?.short_description ||
-    'Premium handcrafted jewellery from BitByte Jewellers.'
+    'Premium handcrafted jewellery from Meta Metails Jewellers.'
 
   const productTag = product?.tag || product?.label || (isGold ? 'Premium' : 'Minimal')
   const tagStyle = TAG_COLORS[productTag] || {
@@ -607,7 +607,7 @@ onClick={() => {
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <img
-            src={logo}
+            src="/team_369.png"
             alt="BitByte"
             style={{
               width: 60,
@@ -618,7 +618,7 @@ onClick={() => {
           />
           <div>
             <div style={{ color: accentColor, fontWeight: 900, fontSize: 18 }}>
-              BITBYTE JEWELLERS
+              Meta Metails
             </div>
             <div style={{ color: subtext, fontSize: 12, fontWeight: 700 }}>
               Product Details

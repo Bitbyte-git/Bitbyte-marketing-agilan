@@ -174,7 +174,7 @@ export default function CardSection() {
       {/* Navbar */}
       <div style={{ position: 'relative', zIndex: 10, background: glass, borderBottom: `1px solid ${border}`, padding: '18px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(16px)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <img src={logo} alt="BitByte Logo" style={{ width: 60, height: 50, borderRadius: '10px', objectFit: 'contain' }} />
+          <img src="/team_369.png" alt="BitByte Logo" style={{ width: 60, height: 50, borderRadius: '10px', objectFit: 'contain' }} />
           <span style={{ color: '#6ee7b7', fontWeight: 700, fontSize: '14px' }}>🛒 My Cart</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -344,7 +344,7 @@ export default function CardSection() {
         <div style={{ textAlign: 'center', marginTop: '48px', animation: 'fadeInUp 0.6s ease 0.3s both' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '16px', color: subtext, fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: 600 }}>
             <div style={{ width: '40px', height: '1px', background: `linear-gradient(90deg,transparent,${subtext})` }} />
-            BitByte Jewellers • My Cart
+            Meta Metails Jewellers • My Cart
             <div style={{ width: '40px', height: '1px', background: `linear-gradient(90deg,${subtext},transparent)` }} />
           </div>
         </div>

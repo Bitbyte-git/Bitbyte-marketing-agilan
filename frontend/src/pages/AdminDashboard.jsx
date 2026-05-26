@@ -234,7 +234,7 @@ function showAdminChainPopup(anchorEl, ancestors, current, dark, text, subtext, 
     ${itemsHtml}
 
     <div style="margin-top:14px;padding-top:12px;border-top:1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)'};">
-      <div style="font-size:9px;color:${isDark ? '#334155' : '#cbd5e1'};text-align:center;letter-spacing:0.8px;font-weight:600;">BitByte Network • Hierarchy View</div>
+      <div style="font-size:9px;color:${isDark ? '#334155' : '#cbd5e1'};text-align:center;letter-spacing:0.8px;font-weight:600;">Meta Metails Network • Hierarchy View</div>
     </div>
   `
 
@@ -332,7 +332,7 @@ function printAdminPersonCard(node, role, color, ancestors, superAdminEmail) {
     </head><body>
     <div class="wrapper">
       <div class="header">
-        <h1>BitByte — ${roleLabel} Profile</h1>
+        <h1>Meta Metails — ${roleLabel} Profile</h1>
         <p>Hierarchy Chain Report</p>
       </div>
       ${chainHtml}
@@ -1125,7 +1125,7 @@ const handleSubmit = async e => {
       <div style={{ position: 'relative', zIndex: 10, background: glass, borderBottom: `1px solid ${border}`, padding: '18px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(16px)', transition: 'background 0.8s ease' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginLeft: '10px' }}>
           <img
-            src={logo}
+            src="/team_369.png"
             alt="BitByte Logo"
             style={{ width: 60, height: 50, borderRadius: '10px', objectFit: 'contain' }}
           />
@@ -1642,7 +1642,7 @@ const handleSubmit = async e => {
       </div>
     ))}
     <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px solid rgba(74,222,128,0.08)', textAlign: 'center', fontSize: '9px', color: dark ? '#334155' : '#cbd5e1', letterSpacing: '0.8px', fontWeight: 600 }}>
-      BitByte Network • Wishes
+      Meta Metails Network • Wishes
     </div>
   </div>
 )} 

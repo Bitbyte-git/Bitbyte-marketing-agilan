@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api'
-import logo from '../assets/logo.png'
+// import logo from '../assets/logo.png'
 // import goldCoin from '../assets/gold-coin.png'
 // import silverCoin from '../assets/silver-coin.png'
 import goldCoin from '../assets/gold-coin-transparent.png'
@@ -384,7 +384,7 @@ function printPersonCard(node, role, cfg, color, ancestors, superAdminEmail) {
     <body>
       <div class="wrapper">
         <div class="header">
-          <h1>BitByte — ${roleLabel} Profile</h1>
+          <h1>Meta Metails — ${roleLabel} Profile</h1>
           <p>Hierarchy Chain Report</p>
         </div>
         ${chainHtml}
@@ -563,7 +563,7 @@ const arrowHtml = idx > 0 ? `
     ${itemsHtml}
 
     <div style="margin-top:14px;padding-top:12px;border-top:1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)'};">
-      <div style="font-size:9px;color:${isDark ? '#334155' : '#cbd5e1'};text-align:center;letter-spacing:0.8px;font-weight:600;">BitByte Network • Hierarchy View</div>
+      <div style="font-size:9px;color:${isDark ? '#334155' : '#cbd5e1'};text-align:center;letter-spacing:0.8px;font-weight:600;">Meta Metails Network • Hierarchy View</div>
     </div>
   `
 
@@ -1400,7 +1400,7 @@ const buildHierarchyOrders = (period, metalKey) => {
       {/* Navbar */}
       <div style={{ position: 'relative', zIndex: 10, background: glass, borderBottom: `1px solid ${border}`, padding: '18px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backdropFilter: 'blur(16px)', transition: 'background 0.8s ease' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginLeft: '10px' }}>
-          <img src={logo} alt="BitByte Logo" style={{ width: 60, height: 50, borderRadius: '10px', objectFit: 'contain' }} />
+          <img src="/team_369.png" alt="BitByte Logo" style={{ width: 60, height: 50, borderRadius: '10px', objectFit: 'contain' }} />
           <span style={{ color: '#a5f3fc', fontWeight: 700, fontSize: '14px' }}>🛡️ Super Admin</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -2170,7 +2170,7 @@ setOrderPopupState({
               </div>
             ))}
             <div style={{ marginTop: 'auto', paddingTop: '8px', borderTop: `1px solid ${border}`, textAlign: 'center' }}>
-              <div style={{ fontSize: '9px', color: '#334155' }}>BitByte Network</div>
+              <div style={{ fontSize: '9px', color: '#334155' }}>Meta Metails Network</div>
             </div>
           </div>
 
@@ -2680,7 +2680,7 @@ setOrderPopupState({
                     onClick={() => {
                       setSpecialAnnForm({
                         title: `🎂 Happy Birthday ${m.first_name} ${m.last_name || ''} (${m._id})`,
-                        message: `By BitByte Technologies — Wishing you a wonderful birthday! May this special day bring you joy, happiness, and all the success you deserve. Here's to another amazing year! 🎉🎂`,
+                        message: `By Meta Metails — Wishing you a wonderful birthday! May this special day bring you joy, happiness, and all the success you deserve. Here's to another amazing year! 🎉🎂`,
                         roles: ['admin', 'dealer', 'sub_dealer', 'promotor', 'customer']
                       })
                       setShowBirthdayList(false)
@@ -2732,7 +2732,7 @@ setOrderPopupState({
                     onClick={() => {
                       setSpecialAnnForm({
                         title: `💍 Happy Anniversary ${m.first_name} ${m.last_name || ''} (${m._id})`,
-                        message: `By BitByte Technologies — Wishing you a beautiful anniversary! May your bond grow stronger with each passing year. Here's to celebrating love and togetherness! 💕💍`,
+                        message: `By Meta Metails — Wishing you a beautiful anniversary! May your bond grow stronger with each passing year. Here's to celebrating love and togetherness! 💕💍`,
                         roles: ['admin', 'dealer', 'sub_dealer', 'promotor', 'customer']
                       })
                       setShowAnniversaryList(false)
@@ -2786,7 +2786,7 @@ setOrderPopupState({
                       const ordinal = yrs === 1 ? '1st' : yrs === 2 ? '2nd' : yrs === 3 ? '3rd' : `${yrs}th`
                       setSpecialAnnForm({
                         title: `🏆 Happy ${ordinal} Work Anniversary ${m.first_name} ${m.last_name || ''} (${m._id})`,
-                        message: `By BitByte Technologies — Congratulations on completing ${yrs} amazing year${yrs > 1 ? 's' : ''} with us! Your dedication and hard work are truly valued. Here's to many more years of success together! 🌟🏆`,
+                        message: `By Meta Metails — Congratulations on completing ${yrs} amazing year${yrs > 1 ? 's' : ''} with us! Your dedication and hard work are truly valued. Here's to many more years of success together! 🌟🏆`,
                         roles: ['admin', 'dealer', 'sub_dealer', 'promotor', 'customer']
                       })
                       setShowJoinDateList(false)

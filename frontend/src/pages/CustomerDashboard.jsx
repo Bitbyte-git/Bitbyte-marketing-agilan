@@ -558,7 +558,7 @@ input[type=number] { -moz-appearance: textfield; appearance: textfield; }
       letterSpacing: '3px'
     }}
   >
-    BitByte Jewels
+    Meta Metails
   </div>
 
   {/* Center Search bar */}
@@ -751,7 +751,7 @@ style={{
           },
           giftcard: {
             type: 'giftcard-grid',
-            items: [{ label: 'BitByte Gift Card', emoji: '🎁' },{ label: 'BitByte E-Gift Card', emoji: '💌' }],
+            items: [{ label: 'Meta Metails Gift Card', emoji: '🎁' },{ label: 'Meta Metails E-Gift Card', emoji: '💌' }],
           },
           price: {
             type: 'price-grid',
@@ -1022,7 +1022,7 @@ style={{
               onMouseLeave={e => { e.currentTarget.querySelector('.gc-box').style.borderColor = '#c9a0a0' }}>
               <div className="gc-box" style={{ width: '100%', aspectRatio: '1.6', borderRadius: 12, background: 'linear-gradient(135deg,#6b0f0f,#8B1A1A)', border: '2px solid #c9a0a0', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 8, transition: 'border-color 0.15s' }}>
                 <span style={{ fontSize: 28 }}>{item.emoji}</span>
-                <span style={{ fontSize: 11, color: '#fff', fontStyle: 'italic', letterSpacing: '0.5px', fontWeight: 300 }}>BitByte</span>
+                <span style={{ fontSize: 11, color: '#fff', fontStyle: 'italic', letterSpacing: '0.5px', fontWeight: 300 }}>Meta Metails</span>
               </div>
               <div style={{ fontSize: 13, color: '#1f2937', textAlign: 'center' }}>{item.label}</div>
             </div>
@@ -1633,7 +1633,7 @@ const sectionTitles = {
               </div>
             ))}
             <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px solid rgba(74,222,128,0.08)', textAlign: 'center', fontSize: '9px', color: dark ? '#334155' : '#cbd5e1', letterSpacing: '0.8px', fontWeight: 600 }}>
-              BitByte Network • Wishes
+              Meta Metails Network • Wishes
             </div>
           </div>
         )}

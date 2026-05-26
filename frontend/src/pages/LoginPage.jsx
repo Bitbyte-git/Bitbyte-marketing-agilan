@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api'
-import logo from "../assets/logo.png";
+// import logo from "../assets/logo.png";
 
 const PARTICLES = Array.from({ length: 15 }, (_, i) => ({
   id: i, size: Math.random() * 60 + 10, x: Math.random() * 100,
@@ -219,8 +219,9 @@ const handleLogin = async (e) => {
   }}
 >
   <img
-    src={logo}
-    alt="Bit Byte Technology Logo"
+  src="/team_369.png"
+    // src={logo}
+    alt="Meta Metails Technology Logo"
     style={{
       width: '100%',
       height: '100%',
@@ -228,9 +229,10 @@ const handleLogin = async (e) => {
       padding: '6px'
     }}
   />
+  
 </div>
 
-          <h2 style={{ fontSize:'1.6rem', fontWeight:900, color: dark ? '#a5f3fc' : accent, margin:'0 0 6px' }}>Bit Byte Technology</h2>
+          <h2 style={{ fontSize:'1.6rem', fontWeight:900, color: dark ? '#a5f3fc' : accent, margin:'0 0 6px' }}>Meta Metails</h2>
           <p style={{ color: subtext, fontSize:'13px', margin:0 }}>Access Portal</p>
         </div>
 
