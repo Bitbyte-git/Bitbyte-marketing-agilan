@@ -3364,7 +3364,12 @@ setOrderPopupState({
                   {/* ── Unlinked customers (no assigned promotor in hierarchy) ── */}
                   {hData.unlinked && hData.unlinked.length > 0 && (
                     <div>
-                      <Arrow rgb="244,114,182" />
+                      <div style={{ display:'flex', justifyContent:'center', padding:'4px 0 6px' }}>
+  <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
+    <div style={{ width:0, height:0, borderLeft:'5px solid transparent', borderRight:'5px solid transparent', borderBottom:'7px solid rgba(244,114,182,0.5)' }} />
+    <div style={{ width:'1.5px', height:'14px', background:'rgba(244,114,182,0.55)' }} />
+  </div>
+</div>
                       <div style={{ background: 'rgba(244,114,182,0.06)', border: '1px dashed rgba(244,114,182,0.4)', borderRadius: '10px', padding: '9px 12px' }}>
                         <div style={{ fontSize: '8px', color: '#f472b6', fontWeight: 800, letterSpacing: '1px', marginBottom: '6px' }}>
                           👤 DIRECT CUSTOMERS — {hData.unlinked.length} customer{hData.unlinked.length > 1 ? 's' : ''}
