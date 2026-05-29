@@ -25,8 +25,41 @@ const ROLE_CFG = {
   customer: { color: '#f472b6', label: '👤 CUSTOMER', idKey: 'customer_id' },
 }
 
+
+function collectCustomersUnder(node, role, orderDetails) {
+  const results = []
+
+  function traverse(n, r) {
+    if (r === 'customer') {
+      const custId = n.customer_id
+      const allOrders = {}
+      ;['today', 'week', 'month'].forEach(p => {
+        allOrders[p] = {}
+        ;['gold_22k', 'gold_24k', 'silver_999'].forEach(mk => {
+          const d = orderDetails?.[p]?.[mk]?.[custId]
+          allOrders[p][mk] = d || { count: 0, amount: 0 }
+        })
+      })
+      results.push({ ...n, _orderInfo: allOrders })
+      return
+    }
+    const childMap = {
+      admin:      { key: 'dealers',    next: 'dealer'     },
+      dealer:     { key: 'sub_dealers',next: 'sub_dealer' },
+      sub_dealer: { key: 'promotors',  next: 'promotor'   },
+      promotor:   { key: 'customers',  next: 'customer'   },
+    }
+    const { key, next } = childMap[r] || {}
+    if (!key) return
+    ;(n[key] || []).forEach(child => traverse(child, next))
+  }
+
+  traverse(node, role)
+  return results
+}
+
 // ─── TREE NODE COMPONENT ───────────────────────────────────────────────────────
-function TreeNode({ node, role, depth = 0, dark, text, subtext, colorIdx = 0, ancestors = [], superAdminEmail = '' }) {
+function TreeNode({ node, role, depth = 0, dark, text, subtext, colorIdx = 0, ancestors = [], superAdminEmail = '', onNodeClick, orderDetails }) {
   const [expanded, setExpanded] = useState(depth < 2)
   const cfg = ROLE_CFG[role]
   const c = COLORS[colorIdx % COLORS.length]
@@ -51,7 +84,13 @@ function TreeNode({ node, role, depth = 0, dark, text, subtext, colorIdx = 0, an
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 0 }}>
       {/* Node Card */}
       <div
-        onClick={() => hasChildren && setExpanded(!expanded)}
+        onClick={(e) => {
+          if (hasChildren) setExpanded(!expanded)
+          if (onNodeClick) {
+            const rect = e.currentTarget.getBoundingClientRect()
+            onNodeClick(node, role, rect)
+          }
+        }}
         style={{
           background: dark ? `rgba(${hexToRgb(c)},0.06)` : `rgba(${hexToRgb(c)},0.08)`,
           border: `1px solid rgba(${hexToRgb(c)},0.35)`,
@@ -201,6 +240,8 @@ function TreeNode({ node, role, depth = 0, dark, text, subtext, colorIdx = 0, an
                     colorIdx={colorIdx + ci + 1}
                     ancestors={[...ancestors, { node, role }]}
                     superAdminEmail={superAdminEmail}
+                    onNodeClick={onNodeClick}
+                    orderDetails={orderDetails}
                   />
                 </div>
               ))}
@@ -764,6 +805,7 @@ export default function SuperAdminDashboard() {
     left: 0,
     top: 0,
   })
+  const [nodeClickPopup, setNodeClickPopup] = useState(null)
 
   const orderHideTimer = useRef(null)
   const getOrderPopupPosition = (anchorEl, side = 'right') => {
@@ -2924,7 +2966,7 @@ setOrderPopupState({
         {/* ── FULL HIERARCHY MODAL ── */}
         {showHierarchy && (
           <div
-            onClick={() => { setShowHierarchy(false); setActiveAdmin(null); removeAdminPopup() }}
+            onClick={() => { setShowHierarchy(false); setActiveAdmin(null); removeAdminPopup(); setNodeClickPopup(null) }}
             style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.80)', backdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
             <div
@@ -2954,7 +2996,7 @@ setOrderPopupState({
                   )}
                 </div>
                 <button
-                  onClick={() => { setShowHierarchy(false); setActiveAdmin(null); removeAdminPopup() }}
+                  onClick={() => { setShowHierarchy(false); setActiveAdmin(null); removeAdminPopup(); setNodeClickPopup(null) }}
                   style={{ background: 'transparent', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171', borderRadius: '8px', padding: '6px 14px', cursor: 'pointer', fontSize: '12px', whiteSpace: 'nowrap', flexShrink: 0 }}
                 >✕ Close</button>
               </div>
@@ -2992,7 +3034,7 @@ setOrderPopupState({
                           {hierarchyData.admins.map((admin, ai) => (
                             <div key={admin.id} className="tree-node-enter" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                               <div style={{ width: 2, height: 24, background: 'rgba(255,215,0,0.5)' }} />
-                              <TreeNode
+                             <TreeNode
                                 node={admin}
                                 role="admin"
                                 depth={0}
@@ -3002,6 +3044,16 @@ setOrderPopupState({
                                 colorIdx={ai}
                                 ancestors={[]}
                                 superAdminEmail={localStorage.getItem('email') || ''}
+                                orderDetails={orderDetails}
+                                onNodeClick={(clickedNode, clickedRole, rect) => {
+                                  const customers = collectCustomersUnder(clickedNode, clickedRole, orderDetails)
+                                  const popW = 340
+                                  let left = rect.right + 16
+                                  if (left + popW > window.innerWidth - 12) left = rect.left - popW - 16
+                                  let top = Math.max(12, rect.top - 40)
+                                  if (top + 500 > window.innerHeight - 12) top = window.innerHeight - 512
+                                  setNodeClickPopup({ node: clickedNode, role: clickedRole, customers, position: { left, top } })
+                                }}
                               />
                             </div>
                           ))}
@@ -3342,6 +3394,126 @@ setOrderPopupState({
           )
         })()}
 
+{/* NODE CLICK CUSTOMER POPUP */}
+{nodeClickPopup && (
+  <div
+    onClick={() => setNodeClickPopup(null)}
+    style={{ position: 'fixed', inset: 0, zIndex: 1600 }}
+  >
+    <div
+      onClick={e => e.stopPropagation()}
+      style={{
+        position: 'fixed',
+        left: nodeClickPopup.position.left,
+        top: nodeClickPopup.position.top,
+        zIndex: 1601,
+        background: dark ? 'rgba(5,10,20,0.97)' : 'rgba(248,250,252,0.98)',
+        border: '1px solid rgba(34,211,238,0.3)',
+        borderRadius: '18px',
+        padding: '18px',
+        minWidth: '300px',
+        maxWidth: '340px',
+        maxHeight: '75vh',
+        overflowY: 'auto',
+        boxShadow: '0 32px 80px rgba(0,0,0,0.85)',
+        fontFamily: 'Inter,system-ui,sans-serif',
+        animation: 'popupIn 0.25s cubic-bezier(0.22,1,0.36,1)',
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'rgba(34,211,238,0.4) transparent',
+      }}
+    >
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', paddingBottom: '12px', borderBottom: '1px solid rgba(34,211,238,0.12)' }}>
+        <div>
+          <div style={{ color: '#22d3ee', fontWeight: 800, fontSize: '11px', letterSpacing: '1.5px' }}>
+            CUSTOMERS UNDER
+          </div>
+          <div style={{ color: dark ? '#f1f5f9' : '#0f172a', fontWeight: 700, fontSize: '14px', marginTop: '3px' }}>
+            {nodeClickPopup.node.first_name} {nodeClickPopup.node.last_name || ''}
+          </div>
+          <div style={{ color: '#64748b', fontSize: '10px', marginTop: '2px' }}>
+            {nodeClickPopup.role.replace(/_/g, ' ').toUpperCase()} &nbsp;•&nbsp; {nodeClickPopup.customers.length} customer{nodeClickPopup.customers.length !== 1 ? 's' : ''}
+          </div>
+        </div>
+        <button
+          onClick={() => setNodeClickPopup(null)}
+          style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171', borderRadius: '8px', padding: '4px 10px', cursor: 'pointer', fontSize: '11px', flexShrink: 0, marginLeft: '8px' }}
+        >✕</button>
+      </div>
+
+      {/* Customer list */}
+      {nodeClickPopup.customers.length === 0 ? (
+        <div style={{ textAlign: 'center', color: '#64748b', padding: '30px 0', fontSize: '13px' }}>
+          No customers found under this node
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {nodeClickPopup.customers.map(c => {
+            const todayTotal = ['gold_22k','gold_24k','silver_999'].reduce((s, mk) => s + (c._orderInfo?.today?.[mk]?.count || 0), 0)
+            const todayAmt   = ['gold_22k','gold_24k','silver_999'].reduce((s, mk) => s + (c._orderInfo?.today?.[mk]?.amount || 0), 0)
+            return (
+              <div key={c.customer_id} style={{
+                background: dark ? 'rgba(244,114,182,0.06)' : 'rgba(244,114,182,0.04)',
+                border: '1px solid rgba(244,114,182,0.22)',
+                borderRadius: '12px',
+                padding: '10px 12px',
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ color: '#f472b6', fontFamily: 'monospace', fontSize: '9px', marginBottom: '3px' }}>
+                      {c.customer_id}
+                    </div>
+                    <div style={{ color: dark ? '#f1f5f9' : '#0f172a', fontWeight: 700, fontSize: '12px' }}>
+                      {c.first_name} {c.last_name || ''}
+                    </div>
+                    {c.mobile_number && (
+                      <div style={{ color: '#64748b', fontSize: '10px', marginTop: '2px' }}>📞 {c.mobile_number}</div>
+                    )}
+                    {c.city_name && (
+                      <div style={{ color: '#64748b', fontSize: '10px' }}>📍 {c.city_name}</div>
+                    )}
+                  </div>
+                  <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '8px' }}>
+                    <div style={{ color: '#f472b6', fontWeight: 900, fontSize: '18px', fontFamily: 'monospace' }}>
+                      {todayTotal}
+                    </div>
+                    <div style={{ color: 'rgba(244,114,182,0.55)', fontSize: '8px' }}>orders today</div>
+                    {todayAmt > 0 && (
+                      <div style={{ color: '#f472b6', fontSize: '10px', fontFamily: 'monospace', marginTop: '2px' }}>
+                        ₹{todayAmt.toFixed(0)}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Per metal breakdown */}
+                <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                  {[
+                    { mk: 'gold_22k',   label: '🏅 Gold 22K', color: '#fbbf24', rgb: '251,191,36'  },
+                    { mk: 'gold_24k',   label: '🥇 Gold 24K', color: '#ffd700', rgb: '255,215,0'   },
+                    { mk: 'silver_999', label: '🥈 Silver',   color: '#c0c0c0', rgb: '192,192,192' },
+                  ].map(({ mk, label, color, rgb }) => {
+                    const cnt = c._orderInfo?.today?.[mk]?.count || 0
+                    const amt = c._orderInfo?.today?.[mk]?.amount || 0
+                    if (cnt === 0) return null
+                    return (
+                      <div key={mk} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '3px 7px', background: `rgba(${rgb},0.09)`, borderRadius: '6px' }}>
+                        <span style={{ fontSize: '9px', color, fontWeight: 700 }}>{label}</span>
+                        <span style={{ fontSize: '10px', color, fontFamily: 'monospace', fontWeight: 800 }}>
+                          {cnt} orders &nbsp;•&nbsp; ₹{amt.toFixed(0)}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  </div>
+)}
 
         {/* ── PROFILE UPDATE REQUESTS MODAL ── */}
         {showRequests && (
