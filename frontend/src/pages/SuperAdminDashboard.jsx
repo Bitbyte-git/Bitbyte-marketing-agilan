@@ -3138,15 +3138,29 @@ setOrderPopupState({
         alignItems: 'center',
         position: 'relative',
       }}>
-        {/* Node card */}
-        <div style={{
-          background: `rgba(${rgb},0.08)`,
-          border: `1px solid rgba(${rgb},0.4)`,
-          borderRadius: '12px',
-          padding: '9px 11px',
-          minWidth: '145px',
-          maxWidth: '170px',
-        }}>
+       {/* Node card */}
+<div
+  onClick={() => {
+    if (role === 'customer') return
+    const customers = collectCustomersUnder(node, role, orderDetails)
+    const popW = 340
+    const screenW = window.innerWidth
+    const screenH = window.innerHeight
+    let left = screenW / 2 + 200
+    if (left + popW > screenW - 12) left = screenW / 2 - popW - 200
+    let top = Math.max(12, screenH / 2 - 250)
+    setNodeClickPopup({ node, role, customers, position: { left, top } })
+  }}
+  style={{
+    background: `rgba(${rgb},0.08)`,
+    border: `1px solid rgba(${rgb},0.4)`,
+    borderRadius: '12px',
+    padding: '9px 11px',
+    minWidth: '145px',
+    maxWidth: '170px',
+    cursor: role !== 'customer' ? 'pointer' : 'default',
+  }}
+>
           <div style={{
             fontSize: '8px',
             color,
