@@ -3140,8 +3140,17 @@ setOrderPopupState({
       }}>
        {/* Node card */}
 <div
-  onClick={() => {
+onClick={() => {
     if (role === 'customer') return
+    
+    // Toggle — same node click panna close aagum
+    const nodeId = node.admin_id || node.dealer_id || node.sub_dealer_id || node.promotor_id
+    const currentId = nodeClickPopup?.node?.admin_id || nodeClickPopup?.node?.dealer_id || nodeClickPopup?.node?.sub_dealer_id || nodeClickPopup?.node?.promotor_id
+    if (nodeClickPopup && nodeId === currentId) {
+      setNodeClickPopup(null)
+      return
+    }
+    
     const customers = collectCustomersUnder(node, role, orderDetails)
     const popW = 340
     const screenW = window.innerWidth
