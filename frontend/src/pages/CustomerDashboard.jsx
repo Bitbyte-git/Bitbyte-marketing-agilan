@@ -1494,7 +1494,7 @@ const sectionTitles = {
           const col = metalColors[orderMetal]
 
           return (
-            <div onClick={() => setOrderPopup(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(12px)', zIndex: 1400, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div onClick={() => setOrderPopup(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(12px)', zIndex: 1400, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '120px' }}>
               <div onClick={e => e.stopPropagation()} style={{ background: dark ? 'linear-gradient(145deg,#0a1628,#060e1c)' : '#f8fafc', border: `1px solid ${col}55`, borderRadius: '24px', width: '95%', maxWidth: '480px', padding: '28px', boxShadow: '0 32px 90px rgba(0,0,0,0.8)', animation: 'fadeIn 0.25s ease' }}>
 
                 {/* Header */}

@@ -3046,13 +3046,15 @@ setOrderPopupState({
                                 superAdminEmail={localStorage.getItem('email') || ''}
                                 orderDetails={orderDetails}
                                 onNodeClick={(clickedNode, clickedRole, rect) => {
-                                  const customers = collectCustomersUnder(clickedNode, clickedRole, orderDetails)
-                                  const popW = 340
-                                  let left = rect.right + 16
-                                  if (left + popW > window.innerWidth - 12) left = rect.left - popW - 16
-                                  let top = Math.max(12, rect.top - 40)
-                                  if (top + 500 > window.innerHeight - 12) top = window.innerHeight - 512
-                                  setNodeClickPopup({ node: clickedNode, role: clickedRole, customers, position: { left, top } })
+                                 const customers = collectCustomersUnder(node, role, orderDetails)
+const popW = 340
+const screenW = window.innerWidth
+const screenH = window.innerHeight
+let left = screenW / 2 - popW / 2 - 350
+if (left < 12) left = 12
+if (left + popW > screenW - 12) left = screenW - popW - 12
+let top = Math.max(12, screenH / 2 - 250)
+setNodeClickPopup({ node, role, customers, position: { left, top } })
                                 }}
                               />
                             </div>
@@ -3151,14 +3153,16 @@ onClick={() => {
       return
     }
     
-    const customers = collectCustomersUnder(node, role, orderDetails)
-    const popW = 340
-    const screenW = window.innerWidth
-    const screenH = window.innerHeight
-    let left = screenW / 2 + 200
-    if (left + popW > screenW - 12) left = screenW / 2 - popW - 200
-    let top = Math.max(12, screenH / 2 - 250)
-    setNodeClickPopup({ node, role, customers, position: { left, top } })
+const customers = collectCustomersUnder(node, role, orderDetails)
+const popW = 340
+const screenW = window.innerWidth
+const screenH = window.innerHeight
+let left = screenW / 2 - 110
+if (left + popW > screenW - 12) left = screenW / 2 - popW - 350
+let top = Math.max(12, screenH / 2 - 250)
+setOrderPopupState(p => ({ ...p, visible: false }))
+setNodeClickPopup({ node, role, customers, position: { left, top } })
+
   }}
   style={{
     background: `rgba(${rgb},0.08)`,
