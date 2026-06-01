@@ -126,15 +126,15 @@ const handleLogin = async (e) => {
   setError('')
 
   // ✅ Wait for server to wake up before attempting login
-  if (!serverReady) {
-    setError('⏳ Server is starting up, please wait...')
-    await new Promise((resolve) => {
-      const check = setInterval(() => {
-        if (serverReady) { clearInterval(check); resolve() }
-      }, 500)
-      setTimeout(() => { clearInterval(check); resolve() }, 15000) // max 15s wait
-    })
-  }
+  // if (!serverReady) {
+  //   setError('⏳ Server is starting up, please wait...')
+  //   await new Promise((resolve) => {
+  //     const check = setInterval(() => {
+  //       if (serverReady) { clearInterval(check); resolve() }
+  //     }, 500)
+  //     setTimeout(() => { clearInterval(check); resolve() }, 15000) // max 15s wait
+  //   })
+  // }
 
   const attemptLogin = () => api.post('login/', { email, password })
 
@@ -255,9 +255,9 @@ const handleLogin = async (e) => {
               style={{ width:'100%', background: inpBg, border:`1px solid ${inpBorder}`, borderRadius:'12px', padding:'13px 16px', color: text, fontSize:'14px', outline:'none', transition:'border .2s', boxSizing:'border-box' }}
               onFocus={e => e.target.style.borderColor = accent} onBlur={e => e.target.style.borderColor = inpBorder} />
           </div>
-  <button type="submit" disabled={loading || !serverReady} className="btn-shimmer"
-  style={{ padding:'14px', background:'linear-gradient(90deg,#22d3ee,#4ade80)', border:'none', borderRadius:'14px', fontWeight:800, color:'#006165', fontSize:'14px', textTransform:'uppercase', letterSpacing:'0.1em', cursor: (loading || !serverReady) ? 'not-allowed' : 'pointer', marginTop:'4px', opacity: (loading || !serverReady) ? 0.6 : 1 }}>
-  {loading ? 'Logging in...' : !serverReady ? '⏳ Connecting...' : 'Login'}
+<button type="submit" disabled={loading} className="btn-shimmer"
+  style={{ padding:'14px', background:'linear-gradient(90deg,#22d3ee,#4ade80)', border:'none', borderRadius:'14px', fontWeight:800, color:'#006165', fontSize:'14px', textTransform:'uppercase', letterSpacing:'0.1em', cursor: loading ? 'not-allowed' : 'pointer', marginTop:'4px', opacity: loading ? 0.6 : 1 }}>
+  {loading ? 'Logging in...' : 'Login'}
 </button>
         </form>
       </div>
