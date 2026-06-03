@@ -105,76 +105,61 @@ draw() {
   const [serverReady, setServerReady] = useState(false)
 const pingInterval = useRef(null)
 
+// ✅ AFTER - Timeout added, no spam, proper retry
 useEffect(() => {
+  if (serverReady) return // already awake, skip
+
   const wakeUp = async () => {
     try {
-      await fetch('https://bitbyte-marketing-backend.onrender.com/api/ping/')
-      setServerReady(true)          // ✅ mark server as ready
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 5000) // ✅ 5s timeout
+
+      await fetch('https://bitbyte-marketing-backend.onrender.com/api/ping/', {
+        signal: controller.signal // ✅ abort if too slow
+      })
+
+      clearTimeout(timeoutId)
+      setServerReady(true)
       clearInterval(pingInterval.current)
     } catch {
-      // retry continue
+      // timeout or sleeping — retry next interval
     }
   }
+
   wakeUp()
-  pingInterval.current = setInterval(wakeUp, 3000)
+  pingInterval.current = setInterval(wakeUp, 5000) // ✅ 5s gap, no spam
   return () => clearInterval(pingInterval.current)
-}, [])
+}, [serverReady]) // ✅ serverReady dependency
 
 const handleLogin = async (e) => {
   e.preventDefault()
   setLoading(true)
   setError('')
 
-  // ✅ Wait for server to wake up before attempting login
-  // if (!serverReady) {
-  //   setError('⏳ Server is starting up, please wait...')
-  //   await new Promise((resolve) => {
-  //     const check = setInterval(() => {
-  //       if (serverReady) { clearInterval(check); resolve() }
-  //     }, 500)
-  //     setTimeout(() => { clearInterval(check); resolve() }, 15000) // max 15s wait
-  //   })
-  // }
+  try {
+    const res = await api.post('login/', { email, password })
 
-  const attemptLogin = () => api.post('login/', { email, password })
+    localStorage.clear()
+    localStorage.setItem('token', res.data.access)
+    localStorage.setItem('refresh', res.data.refresh)
+    localStorage.setItem('role', res.data.role)
+    localStorage.setItem('email', res.data.email)
 
-    try {
-      let res
-      try {
-        res = await attemptLogin()
-      } catch (firstErr) {
-        const isServerSleep = !firstErr.response || firstErr.response?.status >= 500
-        if (isServerSleep) {
-          setError('⏳ Server starting... Retrying')
-          await new Promise(resolve => setTimeout(resolve, 2000))
-          res = await attemptLogin()
-        } else {
-          throw firstErr
-        }
-      }
+    const role = res.data.role
+    if (role === 'super_admin') navigate('/super-admin', { replace: true })
+    else if (role === 'admin') navigate('/admin', { replace: true })
+    else if (role === 'dealer') navigate('/dealer', { replace: true })
+    else if (role === 'sub_dealer') navigate('/sub-dealer', { replace: true })
+    else if (role === 'promotor') navigate('/promotor', { replace: true })
+    else navigate('/customer', { replace: true })
 
-      localStorage.clear()
-      localStorage.setItem('token', res.data.access)
-      localStorage.setItem('refresh', res.data.refresh)
-      localStorage.setItem('role', res.data.role)
-      localStorage.setItem('email', res.data.email)
-
-      const role = res.data.role
-      // NEW
-      if (role === 'super_admin') navigate('/super-admin', { replace: true })
-      else if (role === 'admin') navigate('/admin', { replace: true })
-      else if (role === 'dealer') navigate('/dealer', { replace: true })
-      else if (role === 'sub_dealer') navigate('/sub-dealer', { replace: true })
-      else if (role === 'promotor') navigate('/promotor', { replace: true })
-      else navigate('/customer', { replace: true })
-
-    } catch (err) {
-      const msg = err.response?.data?.error || err.response?.data?.detail || 'Invalid email or password'
-      setError(msg)
-    }
-
-    setLoading(false)
+  } catch (err) {
+    const msg = err.response?.data?.error || err.response?.data?.detail || 'Invalid email or password'
+    setError(msg)
   }
+
+  setLoading(false)
+}
 
   return (
     <div style={{ minHeight:'100vh', background: bg, display:'flex', alignItems:'center', justifyContent:'center', padding:'20px', position:'relative', overflow:'hidden', fontFamily:'"Inter",system-ui,sans-serif', transition:'background 0.8s ease' }}>
